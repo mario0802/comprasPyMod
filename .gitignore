@@ -1,0 +1,66 @@
+# Entornos virtuales
+venv/
+env/
+.venv/
+ENV/
+
+# Bytecode de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Distribución / empaquetado
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Variables de entorno y configuración sensible
+.env
+.env.local
+.flaskenv
+*.env
+
+# Base de datos
+*.db
+*.sqlite
+*.sqlite3
+instance/
+
+# Flask
+.webassets-cache
+flask_session/
+
+# Logs
+*.log
+logs/
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# Cache de herramientas
+.mypy_cache/
+.ruff_cache/
+
+# IDEs / editores
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Migraciones (opcional, depende de tu flujo)
+# migrations/
+
+# Archivos subidos por usuarios (si aplica)
+uploads/
+
+# Jupyter
+.ipynb_checkpoints/
