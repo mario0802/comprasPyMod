@@ -6,9 +6,10 @@ from src.shared.auth.password_hasher import PasswordHasher  # lo definimos si no
 
 
 class CreateUserUseCase:
-    def __init__(self, user_repository: UserRepository, password_hasher: PasswordHasher):
+    def __init__(self, user_repository: UserRepository, password_hasher: PasswordHasher, session):
         self.user_repository = user_repository
         self.password_hasher = password_hasher
+        self.session = session
 
     def execute(self, dto: CreateUserDTO) -> UserResponseDTO:
         if self.user_repository.get_by_correo(dto.correo):
@@ -27,6 +28,10 @@ class CreateUserUseCase:
             password=hashed_password,
             id_usuario_creador=dto.id_usuario_creador,
         )
-
-        created_user = self.user_repository.create(user)
+        try:
+            created_user = self.user_repository.create(user)
+            self.session.commit()
+        except Exception as ex:
+            self.session.rollback()
+            raise
         return UserResponseDTO.from_entity(created_user)

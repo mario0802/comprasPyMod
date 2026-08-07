@@ -9,10 +9,6 @@ from src.modules.users.infrastructure.mappers import UserMapper
 
 
 class SQLAlchemyUserRepository(UserRepository):
-    """
-    Implementación concreta de UserRepository usando SQLAlchemy + Postgres.
-    """
-
     def __init__(self, session: Session):
         self.session = session
 
