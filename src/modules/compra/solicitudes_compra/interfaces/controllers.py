@@ -1,4 +1,4 @@
-from flask import request, g
+from flask import g
 
 from src.modules.compra.solicitudes_compra.application.use_cases.create_solicitud_compra import (
     CreateSolicitudCompraUseCase,
@@ -18,9 +18,6 @@ from src.modules.compra.solicitudes_compra.application.dto import (
     ListarSolicitudesCompraDTO,
 )
 from src.modules.compra.solicitudes_compra.interfaces.schemas import (
-    CrearSolicitudCompraSchema,
-    ActualizarSolicitudCompraSchema,
-    ListarSolicitudesCompraSchema,
     SolicitudCompraResponseSchema,
 )
 from src.shared.utils.response import success_response
@@ -39,9 +36,7 @@ class SolicitudCompraController:
         self.get_solicitud_by_id_use_case = get_solicitud_by_id_use_case
         self.list_solicitudes_use_case = list_solicitudes_use_case
 
-    def create(self):
-        data = CrearSolicitudCompraSchema().load(request.get_json())
-
+    def create(self, data: dict):
         # TODO: reemplazar por el id del usuario autenticado (g.current_user.id)
         id_usuario_creador = g.current_user_id
 
@@ -53,9 +48,7 @@ class SolicitudCompraController:
             status_code=201,
         )
 
-    def update(self, solicitud_id: int):
-        data = ActualizarSolicitudCompraSchema().load(request.get_json())
-
+    def update(self, solicitud_id: int, data: dict):
         # TODO: reemplazar por el id del usuario autenticado (g.current_user.id)
         id_usuario_modificador = g.current_user_id
 
@@ -75,10 +68,8 @@ class SolicitudCompraController:
             status_code=200,
         )
 
-    def list(self):
-        data = ListarSolicitudesCompraSchema().load(request.args)
-
-        dto = ListarSolicitudesCompraDTO(**data)
+    def list(self, filters: dict):
+        dto = ListarSolicitudesCompraDTO(**filters)
         result = self.list_solicitudes_use_case.execute(dto)
 
         return success_response(
