@@ -11,6 +11,13 @@ services:
       POSTGRES_DB: compra_db
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d compra_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - compra_net
 
   pgadmin:
     image: dpage/pgadmin4
@@ -24,7 +31,31 @@ services:
       - pgadmin_data:/var/lib/pgadmin
     depends_on:
       - postgres
-  
+    networks:
+      - compra_net
+
+  app:
+    container_name: compras_app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@postgres:5432/compra_db
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - compra_net
+
 volumes:
   postgres_data:
   pgadmin_data:
+
+networks:
+  compra_net:
+    driver: bridge
