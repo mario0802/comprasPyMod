@@ -5,12 +5,6 @@ from src.modules.users.domain.entities import UserEntity
 
 
 class UserRepository(ABC):
-    """
-    Contrato que debe cumplir cualquier implementación de
-    persistencia para UserEntity. El dominio depende de esta
-    abstracción, no de la implementación concreta (Postgres).
-    """
-
     @abstractmethod
     def get_by_id(self, user_id: int) -> Optional[UserEntity]:
         ...

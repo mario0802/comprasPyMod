@@ -8,7 +8,6 @@ class CreateUserSchema(Schema):
     nick = fields.String(required=True, validate=validate.Length(min=3, max=50))
     password = fields.String(required=True, validate=validate.Length(min=8, max=128))
 
-
 class UserResponseSchema(Schema):
     id = fields.Integer()
     nombre = fields.String()
@@ -17,3 +16,7 @@ class UserResponseSchema(Schema):
     nick = fields.String()
     fecha_creacion = fields.DateTime()
     fecha_modificacion = fields.DateTime(allow_none=True)
+
+class LoginSchema(Schema):
+    correo = fields.Email(required=True)
+    password = fields.Str(required=True, load_only=True)
