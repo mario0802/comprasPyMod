@@ -32,6 +32,13 @@ class Settings:
         os.getenv("JWT_ACCESS_TOKEN_EXPIRES_MIN", "60")
     )
 
+    API_TITLE = "Api Compras"
+    API_VERSION = "v1"
+    OPENAPI_VERSION = "3.0.3"
+    OPENAPI_URL_PREFIX = "/docs"
+    OPENAPI_SWAGGER_UI_PATH = "/swagger"
+    OPENAPI_SWAGGER_UI_URL = "https://cdn.jsdelivr.net/npm/swagger-ui-dist/"
+
     @property
     def is_production(self) -> bool:
         return self.ENV == "production"

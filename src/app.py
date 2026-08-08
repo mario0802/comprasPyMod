@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_smorest import Api
 
 from src.config.settings import settings
 from src.config.database import SessionLocal, Base, engine
@@ -14,8 +15,7 @@ from src.modules.compra.solicitudes_compra.interfaces.routes import solicitudes_
 
 def create_app() -> Flask:
     app = Flask(__name__)
-    app.config["SECRET_KEY"] = settings.SECRET_KEY
-    app.config["DEBUG"] = settings.DEBUG
+    app.config.from_object(settings)
 
     AuthProvider.init(
         JWTAuthStrategy(
@@ -24,8 +24,11 @@ def create_app() -> Flask:
         )
     )
 
+    # --- Swagger / OpenAPI ---
+    api = Api(app)
+
     # --- Blueprints (rutas por módulo) ---
-    register_blueprints(app)
+    register_blueprints(api)
 
     # --- Error handlers globales ---
     register_error_handlers(app)
@@ -41,6 +44,6 @@ def create_app() -> Flask:
     return app
 
 
-def register_blueprints(app: Flask) -> None:
-    app.register_blueprint(users_bp)
-    app.register_blueprint(solicitudes_compra_bp)
+def register_blueprints(api: Api) -> None:
+    api.register_blueprint(users_bp)
+    api.register_blueprint(solicitudes_compra_bp)

@@ -12,7 +12,7 @@ class UserResponseSchema(Schema):
     id = fields.Integer()
     nombre = fields.String()
     apellido = fields.String()
-    correo = fields.String()
+    correo = fields.Email()
     nick = fields.String()
     fecha_creacion = fields.DateTime()
     fecha_modificacion = fields.DateTime(allow_none=True)
