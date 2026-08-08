@@ -9,6 +9,7 @@ from src.shared.auth.jwt_provider import AuthProvider
 from src.shared.auth.strategies.jwt_strategy import JWTAuthStrategy
 
 from src.modules.users.interfaces.routes import users_bp
+from src.modules.compra.solicitudes_compra.interfaces.routes import solicitudes_compra_bp
 
 
 def create_app() -> Flask:
@@ -42,4 +43,4 @@ def create_app() -> Flask:
 
 def register_blueprints(app: Flask) -> None:
     app.register_blueprint(users_bp)
-    # app.register_blueprint(orders_bp)  # futuros módulos van aquí
+    app.register_blueprint(solicitudes_compra_bp)

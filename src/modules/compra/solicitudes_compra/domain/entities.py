@@ -8,10 +8,9 @@ from src.shared.domain.base_entity import BaseEntity
 class EstadoSolicitud:
     PENDIENTE = "PENDIENTE"
     APROBADA = "APROBADA"
-    RECHAZADA = "RECHAZADA"
-    CANCELADA = "CANCELADA"
+    ANULADA = "ANULADA"
 
-    VALIDOS = {PENDIENTE, APROBADA, RECHAZADA, CANCELADA}
+    VALIDOS = {PENDIENTE, APROBADA, ANULADA}
 
 @dataclass(kw_only=True)
 class SolicitudCompraEntity(BaseEntity):
@@ -36,7 +35,7 @@ class SolicitudCompraEntity(BaseEntity):
         if self.monto is not None and self.monto < 0:
             raise ValueError("El monto no puede ser negativo")
         
-        if self.estado in (EstadoSolicitud.APROBADA, EstadoSolicitud.RECHAZADA):
+        if self.estado in (EstadoSolicitud.APROBADA, EstadoSolicitud.ANULADA):
             if not self.aprobado_por:
                 raise ValueError(
                     "aprobado_por es obligatorio cuando el estado es "
@@ -55,7 +54,7 @@ class SolicitudCompraEntity(BaseEntity):
         """Marca la solicitud como rechazada."""
         if self.estado != EstadoSolicitud.PENDIENTE:
             raise ValueError("Solo se puede rechazar una solicitud PENDIENTE")
-        self.estado = EstadoSolicitud.RECHAZADA
+        self.estado = EstadoSolicitud.ANULADA
         self.aprobado_por = aprobado_por
         self.fecha_aprobacion = datetime.utcnow()
 
@@ -63,4 +62,4 @@ class SolicitudCompraEntity(BaseEntity):
         """Cancela la solicitud si aún está pendiente."""
         if self.estado != EstadoSolicitud.PENDIENTE:
             raise ValueError("Solo se puede cancelar una solicitud PENDIENTE")
-        self.estado = EstadoSolicitud.CANCELADA
+        self.estado = EstadoSolicitud.ANULADA

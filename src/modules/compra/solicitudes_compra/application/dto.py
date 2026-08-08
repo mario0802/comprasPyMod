@@ -4,18 +4,23 @@ from decimal import Decimal
 from typing import Optional
 
 
-@dataclass
+@dataclass(kw_only=True)
 class CrearSolicitudCompraDTO:
     """DTO de entrada para crear una nueva solicitud de compra."""
     solicitante_id: int
     descripcion: Optional[str] = None
     monto: Optional[Decimal] = None
+    id_usuario_creador:int
 
-@dataclass
+@dataclass(kw_only=True)
 class ActualizarSolicitudCompraDTO:
     """DTO de entrada para actualizar datos editables de una solicitud (mientras esté PENDIENTE)."""
     descripcion: Optional[str] = None
     monto: Optional[Decimal] = None
+    descripcion: Optional[str]
+    estado: Optional[str] = None
+    aprobado_por: Optional[int]
+    id_usuario_modificador:int
 
 @dataclass
 class AprobarSolicitudCompraDTO:
