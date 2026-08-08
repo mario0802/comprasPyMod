@@ -9,7 +9,7 @@ from src.modules.compra.solicitudes_compra.application.dto import (
     SolicitudCompraResponseDTO,
 )
 
-class ActualizarSolicitudCompraUseCase:
+class UpdateSolicitudCompraUseCase:
     def __init__(self, solicitud_repository: SolicitudCompraRepository, session):
         self.solicitud_repository = solicitud_repository
         self.session = session
@@ -55,13 +55,11 @@ class ActualizarSolicitudCompraUseCase:
                     raise ValueError("aprobado_por es obligatorio para aprobar")
                 solicitud.aprobar(aprobado_por=dto.aprobado_por)
 
-            elif dto.estado == EstadoSolicitud.RECHAZADA:
+            elif dto.estado == EstadoSolicitud.ANULADA:
                 if not dto.aprobado_por:
                     raise ValueError("aprobado_por es obligatorio para rechazar")
                 solicitud.rechazar(aprobado_por=dto.aprobado_por)
 
-            elif dto.estado == EstadoSolicitud.CANCELADA:
-                solicitud.cancelar()
 
             elif dto.estado == EstadoSolicitud.PENDIENTE:
                 # No hay transición "volver a pendiente" en la entidad

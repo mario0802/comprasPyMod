@@ -15,6 +15,7 @@ from src.config.database import Base
 
 # IMPORTANTE: importar todos los modelos para que Alembic los detecte
 from src.modules.users.infrastructure.models import UserModel
+from src.modules.compra.solicitudes_compra.infrastructure.models import SolicitudCompraModel
 # from src.modules.orders.infrastructure.models import OrderModel  # a futuro
 
 # this is the Alembic Config object, which provides

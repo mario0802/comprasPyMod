@@ -10,6 +10,15 @@ from src.modules.users.application.use_cases.get_user import GetUserUseCase
 from src.modules.users.application.use_cases.login_user import LoginUseCase
 from src.modules.users.interfaces.controllers import UserController, AuthController
 
+from src.modules.compra.solicitudes_compra.infrastructure.repositories_impl import (
+    SQLAlchemySolicitudCompraRepository,
+)
+from src.modules.compra.solicitudes_compra.application.use_cases.create_solicitud_compra import CreateSolicitudCompraUseCase
+from src.modules.compra.solicitudes_compra.application.use_cases.update_solicitud_compra import UpdateSolicitudCompraUseCase
+from src.modules.compra.solicitudes_compra.application.use_cases.getById_solicitud_compra import GetSolicitudCompraByIdUseCase
+from src.modules.compra.solicitudes_compra.application.use_cases.get_solicitud_compra import ListSolicitudesCompraUseCase
+from src.modules.compra.solicitudes_compra.interfaces.controllers import SolicitudCompraController
+
 class Container:
     @property
     def session(self):
@@ -44,6 +53,27 @@ class Container:
         return AuthController(
             login_use_case=LoginUseCase(
                 self.user_repository, self.auth_strategy, self.password_hasher
+            ),
+        )
+
+    # ---------- SOLICITUDES COMPRA ----------
+    @property
+    def solicitud_compra_repository(self) -> SQLAlchemySolicitudCompraRepository:
+        return SQLAlchemySolicitudCompraRepository(self.session)
+
+    def get_solicitud_compra_controller(self) -> SolicitudCompraController:
+        return SolicitudCompraController(
+            create_solicitud_use_case=CreateSolicitudCompraUseCase(
+                self.solicitud_compra_repository, self.session
+            ),
+            update_solicitud_use_case=UpdateSolicitudCompraUseCase(
+                self.solicitud_compra_repository, self.session
+            ),
+            get_solicitud_by_id_use_case=GetSolicitudCompraByIdUseCase(
+                self.solicitud_compra_repository
+            ),
+            list_solicitudes_use_case=ListSolicitudesCompraUseCase(
+                self.solicitud_compra_repository
             ),
         )
 
